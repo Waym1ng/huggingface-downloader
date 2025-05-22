@@ -10,7 +10,7 @@ import concurrent.futures
 
 def get_file_urls(base_url, file_extensions, use_mirror=False):
     """
-    获取指定后缀的文件URL列表
+    获取指定后缀的文件URL列表，如果file_extensions包含'all'，则获取所有文件
     """
     try:
         # 如果使用镜像，替换URL
@@ -36,8 +36,8 @@ def get_file_urls(base_url, file_extensions, use_mirror=False):
         if '?download=true' in file_name:
             file_name = file_name.replace('?download=true', '')
         
-        # 检查是否是指定后缀的文件
-        if any(file_name.endswith(ext) for ext in file_extensions):
+        # 检查是否是指定后缀的文件，或者是否下载所有文件
+        if 'all' in file_extensions or any(file_name.endswith(ext) for ext in file_extensions):
             # 获取文件大小信息
             size_element = element.find_next('span')
             file_size = size_element.text.strip() if size_element else "未知大小"
@@ -109,7 +109,7 @@ def main():
     parser = argparse.ArgumentParser(description='从Hugging Face下载指定后缀的模型文件')
     parser.add_argument('--url', help='Hugging Face模型仓库URL')
     parser.add_argument('--json', help='使用已有的JSON文件进行下载')
-    parser.add_argument('--ext', nargs='+', default=['.safetensors'], help='要下载的文件后缀列表，例如：.safetensors .onnx .hash')
+    parser.add_argument('--ext', nargs='+', default=['.safetensors'], help='要下载的文件后缀列表，例如：.safetensors .onnx .hash，使用all下载所有文件')
     parser.add_argument('--output', default='./models', help='下载文件保存的目录路径')
     parser.add_argument('--threads', type=int, default=3, help='并行下载的线程数')
     parser.add_argument('--mirror', action='store_true', help='使用hf-mirror.com镜像')

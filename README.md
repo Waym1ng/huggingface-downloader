@@ -8,6 +8,7 @@
   - 通过URL获取文件列表并下载
   - 使用已有的JSON文件进行下载
 - 支持指定文件后缀筛选下载（URL模式）
+- 支持下载仓库中的所有文件（使用 `--ext all`）
 - 自动生成文件列表并保存为JSON（URL模式）
 - 多线程并行下载，提高下载速度
 - 显示下载进度条
@@ -54,7 +55,7 @@ python model_downloader.py --json ./models/facefusion_models-3.0.0.json
 
 - `--url`：Hugging Face模型仓库URL（与`--json`参数二选一）
 - `--json`：使用已有的JSON文件进行下载（与`--url`参数二选一）
-- `--ext`：要下载的文件后缀列表，默认为`.safetensors`（仅在使用`--url`时有效）
+- `--ext`：要下载的文件后缀列表，默认为`.safetensors`（仅在使用`--url`时有效）。使用`all`可以下载所有文件
 - `--output`：下载文件保存的目录路径，默认为`./models`
 - `--threads`：并行下载的线程数，默认为3
 - `--mirror`：使用hf-mirror.com镜像加速下载
@@ -67,7 +68,13 @@ python model_downloader.py --json ./models/facefusion_models-3.0.0.json
 python model_downloader.py --url https://huggingface.co/facefusion/models-3.2.0/tree/main --ext .safetensors .hash --output ./downloaded_models --threads 5 --mirror
 ```
 
-2. 使用已有的JSON文件下载：
+2. 下载仓库中的所有文件：
+
+```bash
+python model_downloader.py --url https://huggingface.co/facefusion/models-3.2.0/tree/main --ext all --output ./downloaded_models --threads 5 --mirror
+```
+
+3. 使用已有的JSON文件下载：
 
 ```bash
 python model_downloader.py --json ./models/facefusion_models-3.2.0.json --output ./downloaded_models --threads 5 --mirror
